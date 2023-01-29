@@ -1,46 +1,53 @@
 import {useState} from 'react'
-import { Modal, Button} from 'react-bootstrap'
-import {FaTimes, FaPencilAlt} from 'react-icons/fa'
+import {FaTimes, FaPencilAlt, FaTrashAlt, FaSave} from 'react-icons/fa'
 import EditTask from './EditTask'
-//import Modal from './Modal'
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+
+//onToggle, onEditClicked, inProgress,
 
 
-
-// const setInProgress = () => {
-//   !inProgress
-// }
-
-const Task = ({task, onDelete, onToggle, onClick, inProgress, onUpdate, settingTask}) => {  
+const Task = ({task, setTasks, onDelete,  onUpdate, statusOptions}) => {  
   const [show, setShow] = useState(false);
-    
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  return (
-    <div className={`task ${task.status ? 'status':''} ${task.urgently ? 'urgently': '' }`} onDoubleClick={() => onToggle(task.id)}>
-    <EditTask onUpdate={onUpdate} task={task} settingTask={settingTask}/>
-    {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-        </Modal.Header>
-        <Modal.Body>
-        </Modal.Body>
-        <Modal.Footer>
-                <button className='btn btn-block' onClick={handleClose}>
-                    Close Button
-                </button>
-        </Modal.Footer>
-    </Modal> */}
-      <h3>{task.title} <FaTimes style={{color: 'red', cursor:'pointer'}} onClick={() => onDelete(task.id)}/></h3>
-      <p>{task.date} <FaPencilAlt style={{cursor:'pointer'}} onClick={handleShow}/></p>
-    </div>
-  )
+  const editTaskChanged = () =>{setShow(!show)}
   
-}
+  return (
+    <div className={`task  ${task.urgently ? 'urgently': '' }`} >
+    <h3>{task.title} <FaTrashAlt style={{color: '#A93535', cursor:'pointer'}}  onClick={() => onDelete(task.id)}/></h3>
+    <p>{task.date} { !show ? (<FaPencilAlt style={{cursor:'pointer'}} onClick={() => editTaskChanged()}/>) : 
+                            (<FaSave style={{cursor:'pointer'}} onClick={() => editTaskChanged()}/>)}</p>
 
-export default Task
+    {show && <EditTask onUpdate={onUpdate} task={task} availableStatuses={statusOptions} show={show} setShow={editTaskChanged}/>}
+    
+    {/* <FaTimes style={{color: 'red', cursor:'pointer'}} */}
+    {/* settingTask={settingTask} show={show} onClose={handleClose} */}
+    {/* {active  &&  <EditTask onUpdate={onUpdate} task={task} settingTask={settingTask}/>} */}
+    {/* <Modal active={active} setActive={setActive} >
+        {/*  
+    </Modal> */}
+    {/* onClick={() => setActive(true)} */}
+    
+    </div>
+    )
 
-
-
-{/* <Modal.Footer>
-{/* <Button variant="secondary" onClick={handleClose}>
-    Close Button
+  }
+  
+  export default Task
+  
+  {/* <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+      </Modal.Header>
+      <Modal.Body>
+      </Modal.Body>
+      <Modal.Footer>
+              <button className='btn btn-block' onClick={handleClose}>
+                  Close Button
+              </button>
+      </Modal.Footer>
+  </Modal> */}
+  
+  
+  {/* <Modal.Footer>
+  {/* <Button variant="secondary" onClick={handleClose}>
+  Close Button
 </Button> Modal.Footer> */}

@@ -3,60 +3,103 @@ import axios, { Axios } from "axios"
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
+import Modal from './components/Modal';
+import EditTask from './components/EditTask';
 
-// const axios = require('axios');
 
-//import styled from "styled-components";
 
 function App() {
-  // const baseUrl = 'https://localhost:7116/api/ToDoTasks/';
-  const [data, setData] = useState(
-    {
-      title: '',
-      date: '',
-      status: false,
-      urgently: false,
-    }
-  );
+
+
   const [showAddTask, setShowAddTask] = useState(false)//(true)
   const [inProgress, setInProgress] = useState(false)
-  const [tasks, setTasks] = useState(
-    [
-      {
-          id: 1,
-          title: 'Clean room',
-          date: "12/03/2023 10:30",
-          status: false,
-          urgently: false,
-      }
-    ]
-    );
-    
- 
-    
-    async function getTasks() {
-      try {
-        const response = await axios.get("https://localhost:7116/api/ToDoTasks/GetAll")
-        setTasks(response.data)
-      } catch (error) {
-        console.error(error);
-      }
+  const statusOptions = [
+    'To Do', 'In Progress', 'Done'
+  ];
+  const [tasks, setTasks] = useState([
+
+  ]); 
+
+  useEffect( () =>{
+
+    const  getTasks = async () => {
+    try {
+      const response = await axios.get("https://localhost:7116/api/ToDoTasks/GetAll")
+     await setTasks(response.data)
+    } catch (error) {
+      console.error(error);
     }
+  }
+
+    getTasks();
+  }, [])
+    
 
     //Render getting task
-useEffect( () =>{
-  getTasks();
-  // axios.get("https://localhost:7116/api/ToDoTasks/GetAll")
-  // .then(function (response) {
-  //   // handle success
-  //   setTasks(response.data);
-  // })
-  // .catch(function (error) {
-  //   // handle error
-  //   console.log(error);
- // })
-}, [])
+
+        
+// Add task
+
+// Delete Task
+const deleteTask = (id) => {
+
+ let deleteConfirmation = window.confirm('Do you realy want delete this task?'); 
+
+if(deleteConfirmation){
+  axios.delete('https://localhost:7116/api/ToDoTasks/'+id)
+  .then(resp =>{
+      setTasks(tasks.filter((task) => task.id !== id))
+  })
+} 
+}
+
+// Color status
+
+
+const addTask = (task) =>{  
+  axios.post('https://localhost:7116/api/ToDoTasks/Create', task)
+  .then(resp =>{
+    console.log(resp.data)
+    const newData=[...tasks, resp.data]
+    setTasks(newData)
+  })
+//  const newTask = {...task}
+//  setTasks([...tasks, newTask])
+}
+const updateTask = ( updatedTask ) => {
+  axios.put('https://localhost:7116/api/ToDoTasks/', updatedTask)
+  .then(resp => {
     
+    setTasks(tasks.map((task) => task.id === updatedTask.id ? updatedTask : task ))
+    
+  }).catch((error) => {
+    console.error(error)
+  })
+  }
+
+
+
+return (
+  <div className="container">
+    <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
+    {showAddTask && <AddTask onAdd={addTask} availableStatuses={statusOptions}/>}
+
+    {tasks.length > -1  ? (<Tasks tasks={tasks} onDelete={deleteTask} 
+    //  onToggle={toggleStatusColor} 
+      //  onClick={setProgress} inProgress={inProgress}       
+       onUpdate={updateTask} settingTask={setTasks}
+       statusOptions={statusOptions}
+       />) : ('No tasks yet')} 
+      {/* <Modal active={modalActive} setActive={setActive} onUpdate={onUpdate} task={task} settingTask={settingTask}>
+        <EditTask onUpdate={updateTask} task={task} settingTask={settingTask}/>
+    </Modal> */}
+    </div>
+  );
+}
+
+
+export default App;
+
 //Rendering creating task 
 // useEffect( () =>{
 //   axios.post("https://localhost:7116/api/ToDoTasks/Create", {
@@ -83,71 +126,3 @@ useEffect( () =>{
 //     urgently: task.urgently,
 //   }
 //})
-
- // Add task
-
-// Delete Task
-const deleteTask = (id) => {
-  axios.delete('https://localhost:7116/api/ToDoTasks/'+id)
-  .then(resp =>{
-    console.log(resp.data)
-    setTasks(tasks.filter((task) => task.id !== id))
-  })
-}
-// Color staus
-const toggleStatusColor = (id) => {
-  setTasks(tasks.map((task) => task.id === id ? {...task, status: !task.status} : task) )
-}
-
-const setProgress = () => {
-  setInProgress(!inProgress)
-}
-
-const addTask = (task) =>{
-  // const generetedId = Math.floor(Math.random() * 
-  // 10000) + 1 
-  // task.id = generetedId
-
-  axios.post('https://localhost:7116/api/ToDoTasks/Create', task)
-  .then(resp =>{
-    console.log(resp.data)
-    const newData=[...tasks, resp.data]
-    setTasks(newData)
-  })
-//  const newTask = {...task}
-//  setTasks([...tasks, newTask])
-}
-const updateTask = ( updatedTask ) => {
-
-  console.log("update ", updatedTask )
-
-  axios.put('https://localhost:7116/api/ToDoTasks/', updatedTask)
-  .then(resp => {
-   
-    console.log("App:  ", resp.data)
-
-     setTasks(tasks.map((task) => task.id === updatedTask.id ? updatedTask : task ))
-    
-  }).catch((error) => {
-    console.error(error)
-  })
-  
-}
-
-  return (
-    <div className="container">
-    <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
-    {<AddTask onAdd={addTask}/>}
-
-    {tasks.length > 0 || !null ? (<Tasks tasks={tasks}
-       onDelete={deleteTask}  onToggle={toggleStatusColor} 
-       onClick={setProgress} inProgress={inProgress}
-       onUpdate={updateTask} settingTask={setTasks}
-        />) : ('No tasks yet')} 
-    </div>
-  );
-}
-
-
-export default App;
-

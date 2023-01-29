@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 
 * {
   box-sizing: border-box;
@@ -100,8 +100,8 @@ body {
 }
 
 .task.status {
-  border-left: 5px solid green;
-  text-decoration: line-through;
+  border: 10px solid #57a835;
+  /* text-decoration: line-through; */
 }
 .task.urgently{
   background: #dd6161;
@@ -194,38 +194,3 @@ footer {
 }	
 
 
-
-
-
-.modal .modal-dialog {
-	max-width: 400px;
-}
-.modal .modal-header, .modal .modal-body, .modal .modal-footer {
-	padding: 20px 30px;
-}
-.modal .modal-content {
-	border-radius: 3px;
-	font-size: 14px;
-}
-.modal .modal-footer {
-	background: #ecf0f1;
-	border-radius: 0 0 3px 3px;
-}
-.modal .modal-title {
-	display: inline-block;
-}
-.modal .form-control {
-	border-radius: 2px;
-	box-shadow: none;
-	border-color: #dddddd;
-}
-.modal textarea.form-control {
-	resize: vertical;
-}
-.modal .btn {
-	border-radius: 2px;
-	min-width: 100px;
-}	
-.modal form label {
-	font-weight: normal;
-}	

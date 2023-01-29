@@ -1,17 +1,23 @@
 import Task from "./Task"
 
 
-const Tasks = ({tasks, onDelete, onToggle, onClick, inProgress, onUpdate}) => {
-  return (
-    <div>
-      {tasks.map((task) => (
-        <Task key ={task.id} task={task}
-         onDelete = {onDelete} onToggle ={onToggle}
-          onClick={onClick} inProgress={inProgress}
-          onUpdate={onUpdate}/>
-      ))}
-    </div>
-  )
+const Tasks = ({tasks, onDelete,
+   onUpdate, 
+  settingTask, statusOptions}) => {
+return (
+<div>
+{tasks.map((task) => (
+<Task key ={task.id} task={task} 
+onDelete = {onDelete} 
+onUpdate={onUpdate} settingTask={settingTask}
+statusOptions={statusOptions}/>
+))}
+</div>
+)
 }
 
 export default Tasks
+// inProgress, onToggle,
+
+//onToggle ={onToggle}
+// onClick, onClick={onClick} inProgress={inProgress}

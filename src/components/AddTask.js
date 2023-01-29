@@ -2,12 +2,20 @@ import React from 'react'
 import {useState} from 'react' 
 
 
-const AddTask = ({onAdd}) => {
+const AddTask = ({onAdd, availableStatuses}) => {
     const [title, setTitle] = useState('')
     const [date, setDate] = useState('')
-    const [status, setStatus] = useState(false)
+    const [status, setStatus] = useState('To Do')
     const [urgently, setUrgently] = useState(false)
-
+    
+    // const [statusIndex, setStatusIndex] = useState(availableStatuses.findIndex((status) => task.status === status));
+    // if(statusIndex == -1 ){
+    //   setStatusIndex(0);
+    // }
+    // const changeTaskStatus = () => {
+    //   setStatusIndex((statusIndex + 1) % availableStatuses.length);
+    //   return availableStatuses[statusIndex];
+    // }
 const onSubmit = (e) => {
     e.preventDefault()
 
@@ -20,7 +28,7 @@ const onSubmit = (e) => {
 
     setTitle('')
     setDate('')
-    setStatus(false)
+    setStatus('To Do')
     setUrgently(false)  
 }
   return (
@@ -37,6 +45,10 @@ const onSubmit = (e) => {
         <input type="text" placeholder='Add day and time'
          value={date}
          onChange={(e) => setDate(e.target.value)}/>
+      </div>
+      <div className='form-control form-control-check'>
+        <label>Status: </label>
+        <button>{status}</button>
       </div>
       <div className='form-control form-control-check'>
         <label>It's urgently? </label>
