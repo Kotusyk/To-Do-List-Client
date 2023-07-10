@@ -1,6 +1,6 @@
 # To-Do-List-Client
-## It's frontend side for my To Do List React + TypeScript project 
-
+### It's frontend side for my To Do List React + TypeScript project 
+>Backend side you can see [here](https://github.com/Kotusyk/To-Do-List)
 
 ## Tools 
 
